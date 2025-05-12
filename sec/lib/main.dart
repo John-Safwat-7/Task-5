@@ -4,7 +4,9 @@ import 'dart:js';
 import 'package:flutter/material.dart';
 import 'package:sec/add_item_screen.dart';
 import 'package:sec/dashboard_screen.dart';
+import 'package:sec/favorite_model.dart';
 import 'package:sec/item_model.dart';
+import 'package:sec/nav_bar.dart';
 import 'package:sec/profile_page.dart';
 import 'package:provider/provider.dart';
 import 'package:sec/user_model.dart';
@@ -14,7 +16,10 @@ void main() {
   runApp(
 MultiProvider(
   providers: [ChangeNotifierProvider(create: (context)=>UserModel(),),
-  ChangeNotifierProvider(create: (context)=>ItemModel(),)
+  ChangeNotifierProvider(create: (context)=>ItemModel(),
+),
+ChangeNotifierProvider(create: (context)=>FavoriteModel(),
+)
   ],
   child: const MyApp()
 ));
@@ -39,7 +44,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.green),
         useMaterial3: true,
       ),
-      home: DashboardScreen(),
+      home: NavBar(),
     );
   }
 }
@@ -80,7 +85,7 @@ class DetailsPage extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  FavoriteWidget(),
+                  FavoriteWidget(index:items.items.indexOf(items.selectedItem!)),
                   IconButton(onPressed: () {}, icon: Icon(Icons.share)),
                 ],
               ),
@@ -142,7 +147,7 @@ class MySeasons extends StatelessWidget {
 }
 
 class FavoriteWidget extends StatefulWidget{
-  const FavoriteWidget({super.key});
+  const FavoriteWidget({super.key, required int index});
   
   @override
   State<StatefulWidget> createState() => _FavoriteWidgetState();
